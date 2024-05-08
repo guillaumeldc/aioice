@@ -336,9 +336,9 @@ class Connection:
         self._check_list: List[CandidatePair] = []
         self._check_list_done = False
         self._check_list_state: asyncio.Queue = asyncio.Queue()
-        self._early_checks: List[
-            Tuple[stun.Message, Tuple[str, int], StunProtocol]
-        ] = []
+        self._early_checks: List[Tuple[stun.Message, Tuple[str, int], StunProtocol]] = (
+            []
+        )
         self._early_checks_done = False
         self._event_waiter: Optional[asyncio.Future[ConnectionEvent]] = None
         self._id = next(connection_id)
@@ -889,7 +889,9 @@ class Connection:
             # create transport
             try:
                 transport, protocol = await loop.create_datagram_endpoint(
-                    lambda: StunProtocol(self), local_addr=(address, 0)
+                    lambda: StunProtocol(self),
+                    local_addr=(address, 45000),
+                    reuse_port=True,
                 )
                 sock = transport.get_extra_info("socket")
                 if sock is not None:
