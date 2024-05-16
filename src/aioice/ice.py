@@ -890,7 +890,7 @@ class Connection:
             try:
                 transport, protocol = await loop.create_datagram_endpoint(
                     lambda: StunProtocol(self),
-                    local_addr=(address, 45000),
+                    local_addr=(address, random.randint(45000, 50000)),
                     reuse_port=True,
                 )
                 sock = transport.get_extra_info("socket")
